@@ -1,0 +1,26 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Food Products</h1>
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" alt="Placeholder">
+                {% endif %}
+                <h3>{{ product.name }}</h3>
+                <p>${{ product.price }}</p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'add_to_cart' product.id %}" class="btn">Add to Cart</a>
+                {% else %}
+                    <p>Please <a href="{% url 'login' %}">login</a> to add to cart.</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No products available.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
